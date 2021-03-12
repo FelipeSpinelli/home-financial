@@ -1,0 +1,58 @@
+﻿
+<!--<body>
+    <component type="typeof(App)" render-mode="ServerPrerendered" />
+    <div id="blazor-error-ui">
+        <environment include="Staging,Production">
+            An error has occurred. This application may no longer respond until reloaded.
+        </environment>
+        <environment include="Development">
+            An unhandled exception has occurred. See browser dev tools for details.
+        </environment>
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+
+    <script src="_framework/blazor.server.js"></script>-->
+    @*<script>
+            window.upgradeElements = () => {
+                document.querySelectorAll('[to-upgrade]').forEach((elem, i) => {
+                    try {
+                        componentHandler.upgradeElement(elem);
+
+                        if (elem.MaterialTextfield) {
+                            elem.MaterialTextfield.checkDirty();
+                        }
+                    } catch (e) {
+                        console.log(e);
+                    }
+                });
+            }
+
+            window.enableDialogs = () => {
+                document.querySelectorAll('dialog').forEach((dialog, i) => {
+                    var showDialogButton = document.querySelector('[dialog=' + dialog.getAttribute('id') + ']');
+
+                    if (!dialog.showModal) {
+                        dialogPolyfill.registerDialog(dialog);
+                    }
+
+                    showDialogButton.addEventListener('click', function () {
+                        try {
+                            dialog.showModal();
+                        } catch (e) {
+                            console.log(e);
+                        }
+                    });
+
+                    dialog.querySelector('.close').addEventListener('click', function () {
+                        try {
+                            dialog.close();
+                        } catch (e) {
+                            console.log(e);
+                        }
+                    });
+                });
+            }
+        </script>*@
+<!--</body>
+</html>-->

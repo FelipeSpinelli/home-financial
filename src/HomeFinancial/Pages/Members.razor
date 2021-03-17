@@ -28,7 +28,7 @@
                     </MatTableHeader>
                     <MatTableRow>
                         <td>
-                            <MatIcon Icon="@(context.Id == _selectedMember.Id ? "radio_button_checked": "radio_button_unchecked")"></MatIcon>
+                            <MatIcon Icon="@(context.Id == _selectedMember.Id ? "radio_button_checked": "radio_button_unchecked")" Style="vertical-align: middle !important;"></MatIcon>
                             @context.Name
                         </td>
                         <td>
@@ -41,121 +41,145 @@
             <div class="mat-layout-grid-cell mat-layout-grid-cell-span-8 mat-elevation-z2">
                 <div class="mat-body1" style="padding: 5px !important;"><b>Nome:&nbsp;@_selectedMember?.Name</b></div>
                 <MatTabGroup @bind-ActiveIndex="@_selectedMemberActiveTabIndex">
-                    <MatTab Label="Contas">
-                        <div class="mat-layout-grid-inner">
-                            @foreach (var account in _selectedMember.Accounts)
-                            {
-                                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3" style="padding: 5px !important;">
-                                    <MatCard Class="mat-elevation-z2" Style="padding: 5px !important;">
-                                        <MatCardContent>
-                                            <div class="mat-body1" style="padding: 5px !important;">
-                                                <b>@account.ReferenceName</b>
-                                            </div>
-                                            <div class="mat-subtitle2" style="padding: 5px !important;">
-                                                @(account.IsSaving ? "Conta Poupança" : "Conta Corrente")
-                                            </div>
-                                            <MatBody2 Style="@(account.Balance < 0 ? "text-align: right; color: red;" : "text-align: right; color: blue")">
-                                                Saldo: <b>@account.Balance.ToString("c")</b>
-                                            </MatBody2>
-                                        </MatCardContent>
-                                    </MatCard>
-                                </div>
-                            }
-                            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3" style="padding: 5px !important;">
-                                <MatCard Class="mat-elevation-z2 mdc-theme--secondary-bg mdc-theme--on-secondary" Style="padding: 5px !important;"
-                                         @onclick="e => { _newAccountDialogOpened = true; }">
-                                    <MatCardContent>
-                                        <div class="mat-body1" style="padding: 5px !important;">
-                                            <b>Adicionar Nova Conta</b>
-                                        </div>
-                                        <div class="mat-subtitle2" style="padding: 5px !important;">
-                                            &nbsp;
-                                        </div>
-                                        <MatBody2>
-                                            &nbsp;
-                                        </MatBody2>
-                                    </MatCardContent>
-                                </MatCard>
+                    <MatTab>
+                        <LabelContent>
+                            <MatIcon Icon="@MatIconNames.Account_balance_wallet" Style="vertical-align: middle !important;"></MatIcon>&nbsp;Contas
+                        </LabelContent>
+                        <ChildContent>
+                            <div class="mat-layout-grid-inner">
+                                @foreach (var account in _selectedMember.Accounts)
+                                {
+                                    <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3" style="padding: 5px !important;">
+                                        <MatCard Class="mat-elevation-z2" Style="padding: 5px !important;">
+                                            <MatCardContent>
+                                                <div class="mat-body1" style="padding: 5px !important;">
+                                                    <b>@account.ReferenceName</b>
+                                                </div>
+                                                <div class="mat-subtitle2" style="padding: 5px !important;">
+                                                    @(account.IsSaving ? "Conta Poupança" : "Conta Corrente")
+                                                </div>
+                                                <MatBody2 Style="@(account.Balance < 0 ? "text-align: right; color: red;" : "text-align: right; color: blue")">
+                                                    Saldo: <b>@account.Balance.ToString("c")</b>
+                                                </MatBody2>
+                                            </MatCardContent>
+                                        </MatCard>
+                                    </div>
+                                }
+                                @if (!string.IsNullOrEmpty(_selectedMember?.Id))
+                                {
+                                    <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3" style="padding: 5px !important;">
+                                        <MatCard Class="mat-elevation-z2 mdc-theme--secondary-bg mdc-theme--on-secondary" Style="padding: 5px !important;"
+                                                 @onclick="e => { _newAccountDialogOpened = true; }">
+                                            <MatCardContent>
+                                                <div class="mat-body1" style="padding: 5px !important;">
+                                                    <b>Adicionar Nova Conta</b>
+                                                </div>
+                                                <div class="mat-subtitle2" style="padding: 5px !important;">
+                                                    &nbsp;
+                                                </div>
+                                                <MatBody2>
+                                                    &nbsp;
+                                                </MatBody2>
+                                            </MatCardContent>
+                                        </MatCard>
+                                    </div>
+                                }
                             </div>
-                        </div>
+                        </ChildContent>
                     </MatTab>
-                    <MatTab Label="Cartões de Crédito">
-                        <div class="mat-layout-grid-inner">
-                            @foreach (var creditCard in _selectedMember.CreditCards)
-                            {
-                                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3" style="padding: 5px !important;">
-                                    <MatCard Class="mat-elevation-z2" Style="@($"padding: 5px !important; background-color: {creditCard.Color};")">
-                                        <MatCardContent>
-                                            <div class="mat-body1" style="padding: 5px !important;">
-                                                <b>@creditCard.ReferenceName</b>
-                                            </div>
-                                            <div class="mat-body1" style="padding: 5px !important;">
-                                                <p>
-                                                    <b>Disponível:&nbsp;</b>@creditCard.AvailableAmount.ToString("c") de @creditCard.Limit.ToString("c")
-                                                </p>
-                                            </div>
-                                            <MatProgressBar Progress="@creditCard.AvailableRate"></MatProgressBar>
-                                            <MatCaption Style="text-align: left !important;">
-                                                <p>@creditCard.Brand</p>
-                                            </MatCaption>
-                                        </MatCardContent>
-                                    </MatCard>
-                                </div>
-                            }
-                            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3" style="padding: 5px !important;">
-                                <MatCard Class="mat-elevation-z2 mdc-theme--secondary-bg mdc-theme--on-secondary" Style="padding: 5px !important;"
-                                         @onclick="e => { _newCreditCardDialogOpened = true; }">
-                                    <MatCardContent>
-                                        <div class="mat-body1" style="padding: 5px !important;">
-                                            <b>Adicionar Novo Cartão</b>
-                                        </div>
-                                        <div class="mat-body1" style="padding: 5px !important; margin-top: 24px;">
-                                            <p>
-                                                <b>&nbsp;</b>
-                                            </p>
-                                        </div>
-                                        <MatProgressBar Progress="1"></MatProgressBar>
-                                        <MatCaption Style="text-align: left !important;">
-                                            <p>&nbsp;</p>
-                                        </MatCaption>
-                                    </MatCardContent>
-                                </MatCard>
+                    <MatTab>
+                        <LabelContent>
+                            <MatIcon Icon="@MatIconNames.Credit_card" Style="vertical-align: middle !important;"></MatIcon>&nbsp;Cartões de crédito
+                        </LabelContent>
+                        <ChildContent>
+                            <div class="mat-layout-grid-inner">
+                                @foreach (var creditCard in _selectedMember.CreditCards)
+                                {
+                                    <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3" style="padding: 5px !important;">
+                                        <MatCard Class="mat-elevation-z2" Style="@($"padding: 5px !important; background-color: {creditCard.Color};")">
+                                            <MatCardContent>
+                                                <div class="mat-body1" style="padding: 5px !important;">
+                                                    <b>@creditCard.ReferenceName</b>
+                                                </div>
+                                                <div class="mat-body1" style="padding: 5px !important;">
+                                                    <p>
+                                                        <b>Disponível:&nbsp;</b>@creditCard.AvailableAmount.ToString("c") de @creditCard.Limit.ToString("c")
+                                                    </p>
+                                                </div>
+                                                <MatProgressBar Progress="@creditCard.AvailableRate"></MatProgressBar>
+                                                <MatCaption Style="text-align: left !important;">
+                                                    <p>@creditCard.Brand</p>
+                                                </MatCaption>
+                                            </MatCardContent>
+                                        </MatCard>
+                                    </div>
+                                }
+                                @if (!string.IsNullOrEmpty(_selectedMember?.Id))
+                                {
+                                    <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3" style="padding: 5px !important;">
+                                        <MatCard Class="mat-elevation-z2 mdc-theme--secondary-bg mdc-theme--on-secondary" Style="padding: 5px !important;"
+                                                 @onclick="e => { _newCreditCardDialogOpened = true; }">
+                                            <MatCardContent>
+                                                <div class="mat-body1" style="padding: 5px !important;">
+                                                    <b>Adicionar Novo Cartão</b>
+                                                </div>
+                                                <div class="mat-body1" style="padding: 5px !important; margin-top: 24px;">
+                                                    <p>
+                                                        <b>&nbsp;</b>
+                                                    </p>
+                                                </div>
+                                                <MatProgressBar Progress="1"></MatProgressBar>
+                                                <MatCaption Style="text-align: left !important;">
+                                                    <p>&nbsp;</p>
+                                                </MatCaption>
+                                            </MatCardContent>
+                                        </MatCard>
+                                    </div>
+                                }
                             </div>
-                        </div>
+                        </ChildContent>
                     </MatTab>
-                    <MatTab Label="Receitas">
-                        <div class="mat-layout-grid-inner">
-                            @foreach (var revenue in _selectedMember.Revenues)
-                            {
-                                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3" style="padding: 5px !important;">
-                                    <MatCard Class="mat-elevation-z2" Style="padding: 5px !important">
-                                        <MatCardContent>
-                                            <div class="mat-body1" style="padding: 5px !important;">
-                                                <b>@revenue.ReferenceName</b>
-                                            </div>
-                                            <div class="mat-body1" style="padding: 5px !important;">
-                                                <p>
-                                                    <b>Valor:&nbsp;</b>@revenue.Amount.ToString("c")
-                                                </p>
-                                            </div>
-                                        </MatCardContent>
-                                    </MatCard>
-                                </div>
-                            }
-                            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3" style="padding: 5px !important;">
-                                <MatCard Class="mat-elevation-z2 mdc-theme--secondary-bg mdc-theme--on-secondary" Style="padding: 5px !important;"
-                                         @onclick="e => { _newRevenueDialogOpened = true; }">
-                                    <MatCardContent>
-                                        <div class="mat-body1" style="padding: 5px !important;">
-                                            <b>Adicionar Nova Fonte de Renda</b>
-                                        </div>
-                                        <div class="mat-body1" style="padding: 5px !important; margin-top: 8px;">
-                                            &nbsp;
-                                        </div>
-                                    </MatCardContent>
-                                </MatCard>
+                    <MatTab>
+                        <LabelContent>
+                            <MatIcon Icon="@MatIconNames.Attach_money" Style="vertical-align: middle !important;"></MatIcon>&nbsp;Fontes de renda
+                        </LabelContent>
+                        <ChildContent>
+                            <div class="mat-layout-grid-inner">
+                                @foreach (var revenue in _selectedMember.Revenues)
+                                {
+                                    <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3" style="padding: 5px !important;">
+                                        <MatCard Class="mat-elevation-z2" Style="padding: 5px !important">
+                                            <MatCardContent>
+                                                <div class="mat-body1" style="padding: 5px !important;">
+                                                    <b>@revenue.ReferenceName</b>
+                                                </div>
+                                                <div class="mat-body1" style="padding: 5px !important;">
+                                                    <p>
+                                                        <b>Valor:&nbsp;</b>@revenue.Amount.ToString("c")
+                                                    </p>
+                                                </div>
+                                            </MatCardContent>
+                                        </MatCard>
+                                    </div>
+                                }
+                                @if (!string.IsNullOrEmpty(_selectedMember?.Id))
+                                {
+                                    <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3" style="padding: 5px !important;">
+                                        <MatCard Class="mat-elevation-z2 mdc-theme--secondary-bg mdc-theme--on-secondary" Style="padding: 5px !important;"
+                                                 @onclick="e => { _newRevenueDialogOpened = true; }">
+                                            <MatCardContent>
+                                                <div class="mat-body1" style="padding: 5px !important;">
+                                                    <b>Adicionar Nova Fonte de Renda</b>
+                                                </div>
+                                                <div class="mat-body1" style="padding: 5px !important; margin-top: 8px;">
+                                                    &nbsp;
+                                                </div>
+                                            </MatCardContent>
+                                        </MatCard>
+                                    </div>
+                                }
                             </div>
-                        </div>
+                        </ChildContent>
                     </MatTab>
                 </MatTabGroup>
             </div>
@@ -166,7 +190,13 @@
 <MatDialog @bind-IsOpen="@_newMemberDialogOpened">
     <MatDialogTitle>Novo Membro</MatDialogTitle>
     <MatDialogContent>
-        <MatTextField @bind-Value="@_createMemberCommand.Name" Label="Nome"></MatTextField>
+        <div class="mat-layout-grid">
+            <div class="mat-layout-grid-inner">
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
+                    <MatTextField @bind-Value="@_createMemberCommand.Name" Label="Nome"></MatTextField>
+                </div>
+            </div>
+        </div>
     </MatDialogContent>
     <MatDialogActions>
         <MatButton OnClick="@(e => { _newMemberDialogOpened = false; })">Cancelar</MatButton>
@@ -177,18 +207,30 @@
 <MatDialog @bind-IsOpen="@_newAccountDialogOpened">
     <MatDialogTitle>Nova Conta</MatDialogTitle>
     <MatDialogContent>
-        <MatTextField @bind-Value="@_createAccountCommand.ReferenceName" Label="Nome"></MatTextField>
-        <MatTextField @bind-Value="@_createAccountCommand.Bank" Label="Banco"></MatTextField>
-        <MatTextField @bind-Value="@_createAccountCommand.Agency" Label="Agência"></MatTextField>
-        <MatTextField @bind-Value="@_createAccountCommand.Number" Label="Número"></MatTextField>
-        <div>
-            <MatCheckbox @bind-Value="@_createAccountCommand.IsSaving" Label="Poupança?"></MatCheckbox>
+        <div class="mat-layout-grid">
+            <div class="mat-layout-grid-inner">
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
+                    <MatTextField @bind-Value="@_createAccountCommand.ReferenceName" Label="Nome" FullWidth="true"></MatTextField>
+                </div>
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                    <MatTextField @bind-Value="@_createAccountCommand.Bank" Label="Banco" FullWidth="true"></MatTextField>
+                </div>
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                    <MatTextField @bind-Value="@_createAccountCommand.Agency" Label="Agência" FullWidth="true"></MatTextField>
+                </div>
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                    <MatTextField @bind-Value="@_createAccountCommand.Number" Label="Número" FullWidth="true"></MatTextField>
+                </div>
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                    <MatCheckbox @bind-Value="@_createAccountCommand.IsSaving" Label="Poupança?"></MatCheckbox>
+                </div>
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                    <MatNumericUpDownField Label="Saldo Atual"
+                                           @bind-Value="@_createAccountCommand.Balance" FullWidth="true" TValue="double">
+                    </MatNumericUpDownField>
+                </div>
+            </div>
         </div>
-        <p>
-            <MatNumericUpDownField Label="Saldo Atual"
-                                   @bind-Value="@_createAccountCommand.Balance">
-            </MatNumericUpDownField>
-        </p>
     </MatDialogContent>
     <MatDialogActions>
         <MatButton OnClick="@(e => { _newAccountDialogOpened = false; })">Cancelar</MatButton>
@@ -196,26 +238,47 @@
     </MatDialogActions>
 </MatDialog>
 
-<MatDialog @bind-IsOpen="@_newCreditCardDialogOpened">
+<MatDialog @bind-IsOpen="@_newCreditCardDialogOpened" Style="min-width: 740px !important;">
     <MatDialogTitle>Novo Cartão de Crédito</MatDialogTitle>
     <MatDialogContent>
-        <MatTextField @bind-Value="@_createCreditCardCommand.ReferenceName" Label="Identificador"></MatTextField>
-        <p>
-            <MatSelectValue Label="Bandeira"
-                            @bind-Value="@_createCreditCardCommand.Brand"
-                            Items="@CreateMemberCreditCardCommand.Brands"
-                            ValueSelector=@(i=> i)></MatSelectValue>
-        </p>
-        <MatTextField @bind-Value="@_createCreditCardCommand.HolderName" Label="Nome no cartão"></MatTextField>
-        <MatTextField @bind-Value="@_createCreditCardCommand.Number" Label="Número"></MatTextField>
-        <MatTextField @bind-Value="@_createCreditCardCommand.ExpirationDate" Label="Validade"></MatTextField>
-        <MatTextField @bind-Value="@_createCreditCardCommand.VerificationCode" Label="CVV"></MatTextField>
-        <MatTextField @bind-Value="@_createCreditCardCommand.DueDay" Label="Vencimento"></MatTextField>
-        <MatTextField @bind-Value="@_createCreditCardCommand.InvoiceClosingDay" Label="Fechamento da Fatura"></MatTextField>
-        <p>
-            <MatNumericUpDownField Label="Limite" @bind-Value="@_createCreditCardCommand.Limit">
-            </MatNumericUpDownField>
-        </p>
+        <div class="mat-layout-grid">
+            <div class="mat-layout-grid-inner">
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
+                    <MatTextField @bind-Value="@_createCreditCardCommand.ReferenceName" Label="Identificador" FullWidth="true"></MatTextField>
+                </div>
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                    <MatTextField @bind-Value="@_createCreditCardCommand.Color" Label="Cor" Type="color" FullWidth="true"></MatTextField>
+                </div>
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                    <MatSelectValue Label="Bandeira"
+                                    @bind-Value="@_createCreditCardCommand.Brand"
+                                    Items="@CreateMemberCreditCardCommand.Brands"
+                                    ValueSelector=@(i=> i) FullWidth="true"></MatSelectValue>
+                </div>
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                    <MatTextField @bind-Value="@_createCreditCardCommand.HolderName" Label="Nome no cartão" FullWidth="true"></MatTextField>
+                </div>
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                    <MatTextField @bind-Value="@_createCreditCardCommand.Number" Label="Número" FullWidth="true"></MatTextField>
+                </div>
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3">
+                    <MatTextField @bind-Value="@_createCreditCardCommand.ExpirationDate" Label="Validade" FullWidth="true"></MatTextField>
+                </div>
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3">
+                    <MatTextField @bind-Value="@_createCreditCardCommand.VerificationCode" Label="CVV" FullWidth="true"></MatTextField>
+                </div>
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3">
+                    <MatTextField @bind-Value="@_createCreditCardCommand.DueDay" Label="Vencimento" FullWidth="true" TValue="ushort"></MatTextField>
+                </div>
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3">
+                    <MatTextField @bind-Value="@_createCreditCardCommand.InvoiceClosingDay" Label="Fechamento" FullWidth="true" TValue="ushort"></MatTextField>
+                </div>
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                    <MatNumericUpDownField Label="Limite" @bind-Value="@_createCreditCardCommand.Limit" FullWidth="true" TValue="double">
+                    </MatNumericUpDownField>
+                </div>
+            </div>
+        </div>
     </MatDialogContent>
     <MatDialogActions>
         <MatButton OnClick="@(e => { _newCreditCardDialogOpened = false; })">Cancelar</MatButton>
@@ -234,7 +297,7 @@
             </MatSelectItem>
         </p>
         <p>
-            <MatNumericUpDownField Label="Valor (R$)" @bind-Value="@_createRevenueCommand.Amount">
+            <MatNumericUpDownField Label="Valor (R$)" @bind-Value="@_createRevenueCommand.Amount" TValue="double">
             </MatNumericUpDownField>
         </p>
         <p>
@@ -245,7 +308,7 @@
         </p>
         <p>
             <MatNumericUpDownField Label="@CreateMemberRevenueCommand.GetRevenueCreditDayValue(_createRevenueCommand.CreditDayType)"
-                                   @bind-Value="@_createRevenueCommand.CreditDayValue">
+                                   @bind-Value="@_createRevenueCommand.CreditDayValue" TValue="ushort">
             </MatNumericUpDownField>
         </p>
     </MatDialogContent>
@@ -256,7 +319,9 @@
 </MatDialog>
 
 <MatSnackbar @bind-IsOpen="@_showErrorMessage">
-    <MatSnackbarContent>@_errorMessage</MatSnackbarContent>
+    <MatSnackbarContent>
+        @_errorMessage
+    </MatSnackbarContent>
     <MatSnackbarActions>
         <MatButton @onclick="e => _showErrorMessage = false">Fechar</MatButton>
     </MatSnackbarActions>
@@ -289,7 +354,15 @@
 
     private async Task CreateMemberAsync()
     {
-        await _memberAppService.Create(_createMemberCommand);
+        (var isValid, var errors) = await _memberAppService.Create(_createMemberCommand);
+        if (!isValid)
+        {
+            _errorMessage = string.Join("\r\n", errors);
+            _showErrorMessage = true; 
+            return;
+        }
+
+        _showErrorMessage = false;
         _newMemberDialogOpened = false;
         _createMemberCommand = new CreateMemberCommand();
         await LoadMembersList();

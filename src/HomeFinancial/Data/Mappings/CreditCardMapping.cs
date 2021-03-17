@@ -10,6 +10,7 @@ namespace HomeFinancial.Data.Mappings
         public string HolderId { get; private set; }
         public string ReferenceName { get; private set; }
         public string Brand { get; private set; }
+        public string Color { get; private set; }
         public string HolderName { get; private set; }
         public string Number { get; private set; }
         public string ExpirationDate { get; private set; }

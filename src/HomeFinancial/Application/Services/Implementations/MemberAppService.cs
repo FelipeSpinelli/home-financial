@@ -17,16 +17,23 @@ namespace HomeFinancial.Application.Services.Implementations
             _memberService = memberService;
         }
 
-        public async Task Create(CreateMemberCommand createMemberCommand)
+        public async Task<(bool IsValid, IEnumerable<string> Errors)> Create(CreateMemberCommand createMemberCommand)
         {
+            var validation = await CreateMemberCommandValidator.Instance.ValidateAsync(createMemberCommand);
+            if (!validation.IsValid)
+            {
+                return (validation.IsValid, validation.Errors.Select(x => x.ErrorMessage));
+            }
+
             var member = new Member(createMemberCommand.Name);
 
             await _memberService.Upsert(member);
+            return (true, null);
         }
 
         public async Task AddAccount(CreateMemberAccountCommand createMemberAccountCommand)
         {
-            var account = (Account)createMemberAccountCommand;            
+            var account = (Account)createMemberAccountCommand;
             await _memberService.AddAccount(createMemberAccountCommand.MemberId, account);
         }
 

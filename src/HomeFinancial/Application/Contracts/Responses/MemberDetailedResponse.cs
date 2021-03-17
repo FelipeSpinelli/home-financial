@@ -73,12 +73,7 @@ namespace HomeFinancial.Application.Contracts.Responses
                 Id = creditCard.Id,
                 ReferenceName = creditCard.ReferenceName,
                 Brand = creditCard.Brand.ToString(),
-                Color = creditCard.Brand switch
-                {
-                    Domain.Models.Enums.EBrand.MasterCard => "#ebb134",
-                    Domain.Models.Enums.EBrand.Visa => "#3462eb",
-                    _ => "#ffffff"
-                },
+                Color = creditCard.Color,
                 Limit = creditCard.Limit,
                 AvailableAmount = creditCard.Limit - (creditCard.CurrentInvoice?.Amount ?? 0)
             };

@@ -32,7 +32,7 @@ namespace HomeFinancial.Data.Repositories
 	                account.reference_name as ""ReferenceName"", account.bank as ""Bank"", account.agency as ""Agency"", 
 	                account.""number"" as ""Number"", account.is_saving as ""IsSaving"", account.balance as ""Balance"",
 	                credit_card.id as ""Id"", credit_card.holder_id as ""HolderId"", credit_card.reference_name as ""ReferenceName"", 
-	                credit_card.brand as ""Brand"", credit_card.holder_name as ""HolderName"", credit_card.""number"" as ""Number"", 
+	                credit_card.brand as ""Brand"", credit_card.color as ""Color"", credit_card.holder_name as ""HolderName"", credit_card.""number"" as ""Number"", 
 	                credit_card.expiration_date as ""ExpirationDate"", credit_card.verification_code as ""VerificationCode"", 
 	                credit_card.due_day as ""DueDay"", credit_card.invoice_closing_day as ""InvoiceClosingDay"", credit_card.""limit"" as ""Limit"",
 	                revenue.id as ""Id"", revenue.owner_id as ""OwnerId"", revenue.account_id as ""AccountId"", revenue.reference_name as ""ReferenceName"", 

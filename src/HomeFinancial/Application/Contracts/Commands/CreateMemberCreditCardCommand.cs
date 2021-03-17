@@ -10,13 +10,14 @@ namespace HomeFinancial.Application.Contracts.Commands
 
         public string HolderId { get; set; }
         public string ReferenceName { get; set; }
+        public string Color { get; set; }
         public string Brand { get; set; }
         public string HolderName { get; set; }
         public string Number { get; set; }
         public string ExpirationDate { get; set; }
         public string VerificationCode { get; set; }
-        public int DueDay { get; set; }
-        public int InvoiceClosingDay { get; set; }
+        public ushort DueDay { get; set; }
+        public ushort InvoiceClosingDay { get; set; }
         public double Limit { get; set; }
 
         public static explicit operator CreditCard(CreateMemberCreditCardCommand createMemberCreditCardCommand)
@@ -24,6 +25,7 @@ namespace HomeFinancial.Application.Contracts.Commands
             return new CreditCard
             (
                 createMemberCreditCardCommand.ReferenceName,
+                createMemberCreditCardCommand.Color,
                 Enum.Parse<EBrand>(createMemberCreditCardCommand.Brand),
                 createMemberCreditCardCommand.HolderName,
                 createMemberCreditCardCommand.Number,

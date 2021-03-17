@@ -13,6 +13,7 @@ namespace HomeFinancial.Domain.Models.Entities
         public string Id { get; private set; }
         public string HolderId { get; private set; }
         public string ReferenceName { get; private set; }
+        public string Color { get; private set; }
         public EBrand Brand { get; private set; }
         public string HolderName { get; private set; }
         public string Number { get; private set; }
@@ -33,6 +34,7 @@ namespace HomeFinancial.Domain.Models.Entities
         public CreditCard
         (
             string referenceName,
+            string color,
             EBrand brand,
             string holderName,
             string number,
@@ -45,6 +47,7 @@ namespace HomeFinancial.Domain.Models.Entities
         ) : this()
         {
             ReferenceName = referenceName;
+            Color = color;
             Brand = brand;
             HolderName = holderName;
             Number = number;

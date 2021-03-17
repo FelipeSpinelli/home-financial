@@ -21,7 +21,7 @@ namespace HomeFinancial.Application.Contracts.Commands
         public string ReferenceName { get; set; }
         public double Amount { get; set; }
         public string CreditDayType { get; set; } = RevenueCreditDayTypes[0];
-        public int CreditDayValue { get; set; }
+        public ushort CreditDayValue { get; set; }
 
         public static explicit operator Revenue(CreateMemberRevenueCommand createMemberRevenueCommand)
         {
